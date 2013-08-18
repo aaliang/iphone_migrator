@@ -1,25 +1,26 @@
 import sys
 import re
+import codecs
 from collections import namedtuple
+import csv
+from types import StringType, UnicodeType
 
-input_fs = sys.argv[1]
-assert len(input_fs) > 0, 'no input file specified'
-print input_file
-input_file = open(input_fs, 'r+')
+def parse_tracks(input_fs):
+    '''
+        Given an input file of Tab separated values, returns a generator of namedtuples containing the properties of those tracks
+        
+        @type input_fs: StringType or UnicodeType
+        @rtype: GeneratorType
+    '''
+    assert isinstance(input_fs, (StringType, UnicodeType))
+    assert input_fs, 'no input file specified'
 
-cat_line = input_file.readline()
-print cat_line
-cats = re.split('[\\t+]', cat_line)
-# print cats
-print cats[0]
+    with codecs.open(input_fs, encoding='utf-16') as tsv:
+        csv_reader = csv.reader(tsv, dialect="excel-tab")
+        Track = namedtuple('Track', [x.replace(' ', '_').lower() for x in csv_reader.next()])
+        
+        return (Track(*line) for line in csv_reader)
 
-for line in input_file:
-   cats = re.split('[\\t+]', line)
-   # print cats
-   print cats[0]
-
-
-# cat_line = f.readline()
-# print cat_line
-# cats = re.split('[\\t+]', cat_line)
-# print cats
+if __name__ == '__main__':
+    input_fs = sys.argv[1]
+    g_tracks = parse_tracks(input_fs)
