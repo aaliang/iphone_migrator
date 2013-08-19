@@ -6,6 +6,7 @@
 import re
 from collections import defaultdict
 from library_parser.XMLLibraryParser import XMLLibraryParser
+from HTMLParser import HTMLParser
 
 
 class HashPathParser(XMLLibraryParser):
@@ -36,6 +37,9 @@ class HashPathParser(XMLLibraryParser):
        All relevant keys
    '''
 
+   hp = HTMLParser()
+   unescape = HTMLParser.unescape
+      # jacking the unescape method from here
 
    @staticmethod
    def construct_hash_key_from_dict(key_parts):  # @NoSelf
@@ -61,6 +65,7 @@ class HashPathParser(XMLLibraryParser):
       lines = (x for x in s.split("\n"))
       self.dictionary = self.parser(lines)
 
+
    def parser(self, lines):
       '''
          Given a generator of lines (which presumably are of an XML file), this will return a generator
@@ -81,12 +86,15 @@ class HashPathParser(XMLLibraryParser):
 
             # I don't think there is a high likelihood of hash collisions (or key), not the end of the world if there are
             songkey = self.construct_hash_key_from_dict(temp)
+            if temp['Artist'] == 'Air' and temp['Album'] == 'Moon Safari':
+                e = 2
             songs[songkey] = temp[self.VALUE_KEY]
 
          if dicts > 2 and re.match('(\s)*<key>(.*?)</key>', line):
             key, restOfLine = self.keyAndRestOfLine(line)
             if key in self.KEYS_WE_CARE_ABOUT:
-               temp.update({key: self.getValue(restOfLine)})
+               # update the dictionary, also a hack to unescape xml character
+               temp.update({key: self.unescape(self.hp, self.getValue(restOfLine))})
 
          elif dicts == 2 and re.match('(\s)*<key>(.*?)</key>', line):
             inSong = True

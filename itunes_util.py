@@ -51,12 +51,15 @@ if __name__ == '__main__':
 
     print 'writing to playlist output.m3u...'
 
-    for track in g_tracks:
+    not_found = 0
+    for i, track in enumerate(g_tracks):
         hash_string = HashPathParser.construct_hash_key_from_namedtuple(track)
         try:
             print >> target, lib_map[hash_string]
         except KeyError:
+            not_found += 1
             print 'could not find track: %s' % hash_string
 
+    print 'done! %s/%s tracks not found' % (not_found, i + 1)
     target.close()
     print 'done'
