@@ -25,6 +25,7 @@ def parse_tracks_from_export_list(input_fs):
         
         return (x for x in [Track(*line) for line in csv_reader])
 
+# The bottleneck is this function, it will depend on how big the library.xml file is
 def library_map(input_fs):
     '''
         @type input_fs: StringType or UnicodeType
@@ -37,6 +38,8 @@ def library_map(input_fs):
 
 # TODO move either this chunk below, or the ones above to separate file
 if __name__ == '__main__':
+    assert len(sys.argv) == 2, print sys.argv
+    
     device_track_list = sys.argv[1]
     itunes_music_library = sys.argv[2]
 
@@ -46,11 +49,10 @@ if __name__ == '__main__':
     print 'parsing device track list file...'
     g_tracks = parse_tracks_from_export_list(device_track_list)
 
-    target = open('output.m3u', 'w')
-
     print 'writing to playlist output.m3u...'
 
     not_found = 0
+    target = open('output.m3u', 'w')
     for i, track in enumerate(g_tracks):
         hash_string = HashPathParser.construct_hash_key_from_namedtuple(track)
         try:
@@ -61,4 +63,3 @@ if __name__ == '__main__':
 
     print 'done! %s/%s tracks not found' % (not_found, i + 1)
     target.close()
-    print 'done'
