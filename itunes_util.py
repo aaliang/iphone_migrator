@@ -22,8 +22,7 @@ def parse_tracks_from_export_list(input_fs):
     with codecs.open(input_fs, encoding='utf-16') as tsv:
         csv_reader = csv.reader(tsv, dialect="excel-tab")
         Track = namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
-
-        # LOLZ!
+        
         return (x for x in [Track(*line) for line in csv_reader])
 
 def library_map(input_fs):
