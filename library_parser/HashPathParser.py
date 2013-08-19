@@ -57,7 +57,7 @@ class HashPathParser(XMLLibraryParser):
    def __init__(self, xmlLibrary):
       f = open(xmlLibrary)
       s = f.read()
-      # use a generator
+      # this constructor uses a generator instead of a list for lines, doesn't need to be a list
       lines = (x for x in s.split("\n"))
       self.dictionary = self.parser(lines)
 
