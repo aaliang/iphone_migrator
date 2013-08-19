@@ -32,4 +32,3 @@ not sure about OSX
 
 5) run iphone_util.py with the input files that you exported and found. This will create a m3u playlist containing references
 to the files that exist already on the host computer
-
