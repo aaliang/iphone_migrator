@@ -19,6 +19,7 @@ def parse_tracks_from_export_list(input_fs):
     assert isinstance(input_fs, (StringType, UnicodeType))
     assert input_fs, 'no input file specified'
 
+    # This is kind of broken running outside of eclipse. TODO: replace with Unicode Reader here http://docs.python.org/2/library/csv.html#examples
     with codecs.open(input_fs, encoding='utf-16') as tsv:
         csv_reader = csv.reader(tsv, dialect="excel-tab")
         Track = namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
@@ -42,6 +43,7 @@ if __name__ == '__main__':
 
     device_track_list = sys.argv[1]
     itunes_music_library = sys.argv[2]
+
 
     print 'loading itunes music library xml file...'
     lib_map = library_map(itunes_music_library)
