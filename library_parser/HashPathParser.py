@@ -86,8 +86,6 @@ class HashPathParser(XMLLibraryParser):
 
             # I don't think there is a high likelihood of hash collisions (or key), not the end of the world if there are
             songkey = self.construct_hash_key_from_dict(temp)
-            if temp['Artist'] == 'Air' and temp['Album'] == 'Moon Safari':
-                e = 2
             songs[songkey] = temp[self.VALUE_KEY]
 
          if dicts > 2 and re.match('(\s)*<key>(.*?)</key>', line):
