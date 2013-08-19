@@ -80,7 +80,7 @@ class HashPathParser(XMLLibraryParser):
       for line in lines:
          if re.match('(\s)*<dict>', line):
             dicts += 1
-         if re.match('(\s)*</dict>', line):
+         elif re.match('(\s)*</dict>', line):
             dicts -= 1
             inSong = False
 
@@ -88,7 +88,7 @@ class HashPathParser(XMLLibraryParser):
             songkey = self.construct_hash_key_from_dict(temp)
             songs[songkey] = temp[self.VALUE_KEY]
 
-         if dicts > 2 and re.match('(\s)*<key>(.*?)</key>', line):
+         elif dicts > 2 and re.match('(\s)*<key>(.*?)</key>', line):
             key, restOfLine = self.keyAndRestOfLine(line)
             if key in self.KEYS_WE_CARE_ABOUT:
                # update the dictionary, also a hack to unescape xml character
@@ -99,6 +99,6 @@ class HashPathParser(XMLLibraryParser):
             # it's possible that there are null values for the HASH_KEYS defined above. default to empty string in that case
             temp = defaultdict(lambda: '')
 
-         elif len(songs) > 0 and dicts < 2:
+         if len(songs) > 0 and dicts < 2:
             return songs
       return songs
