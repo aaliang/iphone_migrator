@@ -22,10 +22,14 @@ on both systems.
 Thanksfully (and conveniently) this does not require jailbreaking the phone. All you have to do are the following steps:
 
 1) plug in phone to iTunes, go to 'On This Phone'
+
 2) Right click "Music' and select 'Export'
+
 3) Export the file to some location -> this is the [iphone export list] file we'll use in the invocation
+
 4) Find the "iTunes Music Library.xml" file. Typically this should be in the "~\My Documents\My Music\iTunes" directory in Windows
 not sure about OSX
+
 5) run iphone_util.py with the input files that you exported and found. This will create a m3u playlist containing references
 to the files that exist already on the host computer
 
