@@ -34,7 +34,7 @@ def library_map(input_fs):
     assert isinstance(input_fs, (StringType, UnicodeType))
     assert input_fs, 'no input file specified'
 
-    return HashPathParser("iTunes Music Library.xml").dictionary
+    return HashPathParser(input_fs).dictionary
 
 # TODO move either this chunk below, or the ones above to separate file
 if __name__ == '__main__':
