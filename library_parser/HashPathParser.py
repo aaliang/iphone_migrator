@@ -86,6 +86,8 @@ class HashPathParser(XMLLibraryParser):
 
             # I don't think there is a high likelihood of hash collisions (or key), not the end of the world if there are
             songkey = self.construct_hash_key_from_dict(temp)
+            if temp['Artist'] == 'Air' and temp['Album'] == 'Moon Safari':
+                e = 2
             songs[songkey] = temp[self.VALUE_KEY]
 
          elif dicts > 2 and re.match('(\s)*<key>(.*?)</key>', line):
@@ -99,6 +101,6 @@ class HashPathParser(XMLLibraryParser):
             # it's possible that there are null values for the HASH_KEYS defined above. default to empty string in that case
             temp = defaultdict(lambda: '')
 
-         if len(songs) > 0 and dicts < 2:
+         elif len(songs) > 0 and dicts < 2:
             return songs
       return songs

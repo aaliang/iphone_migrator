@@ -22,7 +22,7 @@ def parse_tracks_from_export_list(input_fs):
     with codecs.open(input_fs, encoding='utf-16') as tsv:
         csv_reader = csv.reader(tsv, dialect="excel-tab")
         Track = namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
-        
+
         return (x for x in [Track(*line) for line in csv_reader])
 
 # The bottleneck is this function, it will depend on how big the library.xml file is
@@ -38,8 +38,8 @@ def library_map(input_fs):
 
 # TODO move either this chunk below, or the ones above to separate file
 if __name__ == '__main__':
-    assert len(sys.argv) == 2, print sys.argv
-    
+    assert len(sys.argv) == 3
+
     device_track_list = sys.argv[1]
     itunes_music_library = sys.argv[2]
 
