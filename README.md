@@ -4,7 +4,9 @@ Requirements
   - Python 2.6
   - Windows/OSX + iTunes
 
-(working) pairs the iphone with a different library than the original, remembering what is currently on the phone
+NOT DONE YET.
+
+pairs the iphone with a different library than the original, remembering what is currently on the phone
 
 While the use case of this is probably extremely infrequent, this was a simple solution when I needed to sync my iphone
 with a different computer that had windows on it, and being able to "keep" my music library on my iphone without
