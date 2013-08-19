@@ -4,6 +4,7 @@ import codecs
 from collections import namedtuple
 from library_parser.XMLLibraryParser import XMLLibraryParser
 from library_parser.HashPathParser import HashPathParser
+from UnicodeReader import UnicodeReader
 # from itunes_library_parser import ItunesXMLParser
 import csv
 from types import StringType, UnicodeType
@@ -19,12 +20,10 @@ def parse_tracks_from_export_list(input_fs):
     assert isinstance(input_fs, (StringType, UnicodeType))
     assert input_fs, 'no input file specified'
 
-    # This is kind of broken running outside of eclipse. TODO: replace with Unicode Reader here http://docs.python.org/2/library/csv.html#examples
-    with codecs.open(input_fs, encoding='utf-16') as tsv:
-        csv_reader = csv.reader(tsv, dialect="excel-tab")
-        Track = namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
-
-        return (x for x in [Track(*line) for line in csv_reader])
+    f = open(input_fs, 'r+')
+    csv_reader = UnicodeReader(f, dialect=csv.excel_tab, encoding="utf-16")
+    Track = namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
+    return (x for x in [Track(*line) for line in csv_reader])
 
 # The bottleneck is this function, it will depend on how big the library.xml file is
 def library_map(input_fs):
