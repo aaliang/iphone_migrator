@@ -1,6 +1,4 @@
 # @author: liamks
-# https://github.com/liamks/pyitunes
-
 import re
 class XMLLibraryParser:
     def __init__(self, xmlLibrary):

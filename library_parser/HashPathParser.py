@@ -1,6 +1,7 @@
 # Date created 8/18/2013
 # @author aliang
 
+# TODO: Improve XMLLibraryParser
 
 import re
 from collections import defaultdict
@@ -22,7 +23,7 @@ class HashPathParser(XMLLibraryParser):
      using the xml parsing classes
    '''
 
-   HASH_KEYS = ('Name', 'Artist', 'Album', 'Size')
+   HASH_KEYS = ('Name', 'Artist', 'Album')
    '''
       The properties that will be used to construct to hash
    '''
@@ -34,6 +35,24 @@ class HashPathParser(XMLLibraryParser):
    '''
        All relevant keys
    '''
+
+
+   @staticmethod
+   def construct_hash_key_from_dict(key_parts):  # @NoSelf
+     '''
+        Gives the hash used 
+     
+        @type key_parts: DictType
+        @precondition all(item in HashPathParser.HASH_KEYS.keys() for item in key_parts.items())
+        @rtype: UnicodeType
+     '''
+     return " ".join("(%s:%s)" % (x, key_parts[x]) for x in HashPathParser.HASH_KEYS)
+
+   # this was kind of overkill to make this method. at least it's relatively centralized here
+   @staticmethod
+   def construct_hash_key_from_namedtuple(key_parts):
+      return " ".join("(%s:%s)" % (x, getattr(key_parts, x)) for x in HashPathParser.HASH_KEYS)
+
 
    def __init__(self, xmlLibrary):
       f = open(xmlLibrary)
@@ -54,22 +73,22 @@ class HashPathParser(XMLLibraryParser):
       songs = {}
       inSong = False
       for line in lines:
-         if re.search('<dict>', line):
+         if re.match('(\s)*<dict>', line):
             dicts += 1
-         if re.search('</dict>', line):
+         if re.match('(\s)*</dict>', line):
             dicts -= 1
             inSong = False
 
             # I don't think there is a high likelihood of hash collisions (or key), not the end of the world if there are
-            songkey = " ".join("(%s:%s)" % (x, temp[x]) for x in self.HASH_KEYS)
+            songkey = self.construct_hash_key_from_dict(temp)
             songs[songkey] = temp[self.VALUE_KEY]
 
-         if dicts > 2 and re.search('<key>(.*?)</key>', line):
+         if dicts > 2 and re.match('(\s)*<key>(.*?)</key>', line):
             key, restOfLine = self.keyAndRestOfLine(line)
             if key in self.KEYS_WE_CARE_ABOUT:
                temp.update({key: self.getValue(restOfLine)})
 
-         elif dicts == 2 and re.search('<key>(.*?)</key>', line):
+         elif dicts == 2 and re.match('(\s)*<key>(.*?)</key>', line):
             inSong = True
             # it's possible that there are null values for the HASH_KEYS defined above. default to empty string in that case
             temp = defaultdict(lambda: '')

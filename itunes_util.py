@@ -21,7 +21,7 @@ def parse_tracks_from_export_list(input_fs):
 
     with codecs.open(input_fs, encoding='utf-16') as tsv:
         csv_reader = csv.reader(tsv, dialect="excel-tab")
-        Track = namedtuple('Track', [x.replace(' ', '_').lower() for x in csv_reader.next()])
+        Track = namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
 
         # LOLZ!
         return (x for x in [Track(*line) for line in csv_reader])
@@ -34,15 +34,29 @@ def library_map(input_fs):
     assert isinstance(input_fs, (StringType, UnicodeType))
     assert input_fs, 'no input file specified'
 
-    # better = ItunesXMLParser(input_fs)
-    pl = HashPathParser("iTunes Music Library.xml")
+    return HashPathParser("iTunes Music Library.xml").dictionary
 
 # TODO move either this chunk below, or the ones above to separate file
 if __name__ == '__main__':
     device_track_list = sys.argv[1]
     itunes_music_library = sys.argv[2]
 
-    library_map(itunes_music_library)
+    print 'loading itunes music library xml file...'
+    lib_map = library_map(itunes_music_library)
 
+    print 'parsing device track list file...'
     g_tracks = parse_tracks_from_export_list(device_track_list)
 
+    target = open('output.m3u', 'w')
+
+    print 'writing to playlist output.m3u...'
+
+    for track in g_tracks:
+        hash_string = HashPathParser.construct_hash_key_from_namedtuple(track)
+        try:
+            print >> target, lib_map[hash_string]
+        except KeyError:
+            print 'could not find track: %s' % hash_string
+
+    target.close()
+    print 'done'
