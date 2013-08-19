@@ -1,6 +1,8 @@
 import re
 from collections import defaultdict
 
+@author aliang and liamks
+
 class XMLLibraryParser:
    '''
      Modified version of XMLLibraryParser forked from https://github.com/liamks/pyitunes,
@@ -21,7 +23,8 @@ class XMLLibraryParser:
       The properties that will be used to construct to hash
    '''
 
-   VALUE_KEY = 'Location'  # this is the only value we REALLY care about
+   VALUE_KEY = 'Location'
+   # this is the only value we have a vested interest in
 
    KEYS_WE_CARE_ABOUT = HASH_KEYS + (VALUE_KEY,)
 
@@ -65,7 +68,7 @@ class XMLLibraryParser:
             inSong = False
 
             # I don't think there is a high likelihood of hash collisions (or key), not the end of the world if there are
-            songkey = " ".join(temp[x] for x in self.HASH_KEYS)
+            songkey = " ".join("(%s:%s)" % (x, temp[x]) for x in self.HASH_KEYS)
             songs[songkey] = temp[self.VALUE_KEY]
 
          if dicts > 2 and re.search('<key>(.*?)</key>', line):
