@@ -1,4 +1,4 @@
-iphone_migrator
+playlist_migrator
 ===============
 
 usage: python iphone_util.py [iphone export list] [itunes music library.xml]
