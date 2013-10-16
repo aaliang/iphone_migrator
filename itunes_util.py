@@ -11,7 +11,8 @@ from types import StringType, UnicodeType
 
 def parse_tracks_from_export_list(input_fs):
     '''
-        Given an input file of Tab separated values, returns a generator of namedtuples containing the properties of those tracks
+        Given an input file of Tab separated values, returns a generator of namedtuples containing the properties of 
+        those tracks
         
         @type input_fs: StringType or UnicodeType
         @param input_fs: path of the Music.txt file generated from iPhone/iPod
