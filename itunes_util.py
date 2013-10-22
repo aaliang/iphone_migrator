@@ -5,19 +5,18 @@ from collections import namedtuple
 from library_parser.XMLLibraryParser import XMLLibraryParser
 from library_parser.HashPathParser import HashPathParser
 from UnicodeReader import UnicodeReader
-# from itunes_library_parser import ItunesXMLParser
 import csv
 from types import StringType, UnicodeType
 
 def parse_tracks_from_export_list(input_fs):
-    '''
+    """
         Given an input file of Tab separated values, returns a generator of namedtuples containing the properties of 
         those tracks
         
         @type input_fs: StringType or UnicodeType
         @param input_fs: path of the Music.txt file generated from iPhone/iPod
         @rtype: GeneratorType
-    '''
+    """
     assert isinstance(input_fs, (StringType, UnicodeType))
     assert input_fs, 'no input file specified'
 
@@ -28,10 +27,10 @@ def parse_tracks_from_export_list(input_fs):
 
 # The bottleneck is this function, it will depend on how big the library.xml file is
 def library_map(input_fs):
-    '''
+    """
         @type input_fs: StringType or UnicodeType
         @param input_fs: path of the "iTunes Music Library.xml" file
-    '''
+    """
     assert isinstance(input_fs, (StringType, UnicodeType))
     assert input_fs, 'no input file specified'
 
