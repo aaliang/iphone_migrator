@@ -4,7 +4,7 @@ import codecs
 from collections import namedtuple
 from library_parser.XMLLibraryParser import XMLLibraryParser
 from library_parser.HashPathParser import HashPathParser
-from UnicodeReader import UnicodeReader
+from UnicodeTools import UnicodeReader
 import csv
 from types import StringType, UnicodeType
 
