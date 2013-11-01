@@ -1,11 +1,11 @@
 import sys
 import re
 import codecs
-from collections import namedtuple
+import collections
+import csv
 from library_parser.XMLLibraryParser import XMLLibraryParser
 from library_parser.HashPathParser import HashPathParser
 from UnicodeTools import UnicodeReader
-import csv
 from types import StringType, UnicodeType
 
 def parse_tracks_from_export_list(input_fs):
@@ -22,7 +22,7 @@ def parse_tracks_from_export_list(input_fs):
 
     f = open(input_fs, 'r+')
     csv_reader = UnicodeReader(f, dialect=csv.excel_tab, encoding="utf-16")
-    Track = namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
+    Track = collections.namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
     return (x for x in [Track(*line) for line in csv_reader])
 
 # The bottleneck is this function, it will depend on how big the library.xml file is
