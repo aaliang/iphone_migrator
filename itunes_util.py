@@ -36,31 +36,32 @@ def library_map(input_fs):
 
     return HashPathParser(input_fs).dictionary
 
-# TODO move either this chunk below, or the ones above to separate file
 if __name__ == '__main__':
-    assert len(sys.argv) == 3
-
-    device_track_list = sys.argv[1]
-    itunes_music_library = sys.argv[2]
-
-
-    print 'loading itunes music library xml file...'
-    lib_map = library_map(itunes_music_library)
-
-    print 'parsing device track list file...'
-    g_tracks = parse_tracks_from_export_list(device_track_list)
-
-    print 'writing to playlist output.m3u...'
-
-    not_found = 0
-    target = open('output.m3u', 'w')
-    for i, track in enumerate(g_tracks):
-        hash_string = HashPathParser.construct_hash_key_from_namedtuple(track)
-        try:
-            print >> target, lib_map[hash_string]
-        except KeyError:
-            not_found += 1
-            print 'could not find track: %s' % hash_string
-
-    print 'done! %s/%s tracks not found' % (not_found, i + 1)
-    target.close()
+    if len(sys.argv) != 3:
+        print 'usage: python itunes_util.py {device_track_file} {itunes_library_file}'
+    else:
+        device_track_list = sys.argv[1]
+        itunes_music_library = sys.argv[2]
+    
+    
+        print 'loading itunes music library xml file...'
+        lib_map = library_map(itunes_music_library)
+    
+        print 'parsing device track list file...'
+        g_tracks = parse_tracks_from_export_list(device_track_list)
+    
+        print 'writing to playlist output.m3u...'
+    
+        not_found = 0
+        target = open('output.m3u', 'w')
+        for i, track in enumerate(g_tracks):
+            hash_string = HashPathParser.construct_hash_key_from_namedtuple(track)
+            try:
+                print >> target, lib_map[hash_string]
+            except KeyError:
+                not_found += 1
+                print 'could not find track: %s' % hash_string
+                pass
+    
+        print 'done! %s/%s tracks not found' % (not_found, i + 1)
+        target.close()
