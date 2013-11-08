@@ -25,7 +25,6 @@ def parse_tracks_from_export_list(input_fs):
     Track = collections.namedtuple('Track', [x.replace(' ', '_') for x in csv_reader.next()])
     return (x for x in [Track(*line) for line in csv_reader])
 
-# The bottleneck is this function, it will depend on how big the library.xml file is
 def library_map(input_fs):
     """
         @type input_fs: StringType or UnicodeType
