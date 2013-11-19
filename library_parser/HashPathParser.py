@@ -47,7 +47,7 @@ class HashPathParser(XMLLibraryParser):
         Gives the hash used 
      
         @type key_parts: DictType
-        @precondition all(item in HashPathParser.HASH_KEYS.keys() for item in key_parts.items())
+        @precondition set(HashPathParser.HASH_KEYS) == set(key_parts.keys())
         @rtype: UnicodeType
      '''
      return " ".join("(%s:%s)" % (x, key_parts[x]) for x in HashPathParser.HASH_KEYS)
